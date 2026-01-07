@@ -1,5 +1,5 @@
-import { createContext, useState, type Dispatch, type SetStateAction } from 'react'
-import { type Package, data } from './sample'
+import { createContext, useEffect, useState, type Dispatch, type SetStateAction } from 'react'
+import { type Package, data as sampleData } from './sample'
 import SearchContainer from './components/search/SearchContainer'
 import ResultsContainer from './components/results/ResultsContainer'
 import ResultEntry from './components/results/ResultEntry'
@@ -14,8 +14,30 @@ export interface ISearchContext {
 export const SearchContext = createContext<ISearchContext | null>(null)
 
 function App() {
-	const [packages, setPackages] = useState(data.packages)
+	const [packages, setPackages] = useState(sampleData.packages)
 	const [searchQuery, setSearchQuery] = useState("")
+
+	const fetchData = async () => {
+		const url = "https://my.api.mockaroo.com/orders.json?key=e49e6840"
+		let result = [] as Package[]
+		try {
+			const response = await fetch(url)
+			if (!response.ok) {
+				console.log("Response not ok:",response)
+				setPackages(result)
+			}
+			result = await response.json()
+			console.log("Fetch successful",result)
+			setPackages(result)
+		} catch (err) {
+			console.log("fetch error:",err)
+			setPackages(result)
+		}
+	}
+
+	useEffect(() => {
+		fetchData()
+	}, [])
 
 	return (
 		<>
