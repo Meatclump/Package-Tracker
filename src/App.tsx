@@ -23,7 +23,13 @@ function App() {
 				<div className="flex flex-col w-200 max-w-[calc(100%-2rem)] shadow">
 					<Header />
 					<SearchContext value={{packages, searchQuery, setSearchQuery}}>
-						<SearchContainer />
+						<div className="px-6 pt-3 pb-6 md:px-12 md:pt-6 mb:pb-12 w-full bg-primary">
+							<div className="flex justify-end gap-1 w-full text-sm">
+								<span className='font-semibold'>User:</span>
+								<span>{packages?.length >= 1 && packages[0].user_name}</span>
+							</div>
+							<SearchContainer />
+						</div>
 						{packages?.length >= 1 &&
 							<ResultsContainer>
 								{packages // If a query is set, only display results with a matching parcel id

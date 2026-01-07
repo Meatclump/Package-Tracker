@@ -45,6 +45,12 @@ const ResultEntry = ({pkg}: ResultEntryProps) => {
                     <span>{pkg.parcel_id}</span>
                 </div>
             </div>
+            <div className="flex justify-between">
+                <div className="flex gap-1 text-sm">
+                    <span className="font-semibold">Sender:</span>
+                    <span>{pkg.sender}</span>
+                </div>
+            </div>
             {!deliveredStatus.includes(pkg.status) && // Render if not delivered
                 <div className="flex justify-between">
                     <div className="flex gap-1 text-sm">
@@ -53,7 +59,13 @@ const ResultEntry = ({pkg}: ResultEntryProps) => {
                     </div>
                 </div>
             }
-            <div className="flex flex-col items-center gap-1 text-sm">
+            {pkg.notes &&
+                <div className="text-sm">
+                    <span className="font-semibold">Notes:</span>
+                    <span>{pkg.notes}</span>
+                </div>
+            }
+            <div className="flex flex-col items-center gap-1 text-sm border p-3 my-3">
                 <span className="font-semibold">Shipping Status:</span>
                 <p className="flex gap-1 items-center text-center text-lg">
                     {statusIcon && statusIcon}

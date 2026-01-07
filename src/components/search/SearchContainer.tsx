@@ -13,14 +13,12 @@ const SearchContainer = () => {
 	}
 
 	return (
-		<div className="p-6 md:p-12 w-full bg-primary">
-			<form action={handleSubmit}>
-				<FilterPackageInput
-					value={trackingNumber}
-					onChange={(e) => setTrackingNumber(e.target.value)}
-				/>
-			</form>
-		</div>
+		<form action={handleSubmit}>
+			<FilterPackageInput
+				value={trackingNumber}
+				onChange={(e) => setTrackingNumber(e.target.value)}
+			/>
+		</form>
 	)
 }
 
