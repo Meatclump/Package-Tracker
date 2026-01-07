@@ -1,15 +1,42 @@
-import { useState } from 'react'
+import { createContext, useState, type Dispatch, type SetStateAction } from 'react'
+import { type Package, data } from './sample'
+import SearchContainer from './components/search/SearchContainer'
+import ResultsContainer from './components/results/ResultsContainer'
+import ResultEntry from './components/results/ResultEntry'
+import Header from './components/Header'
+
+export interface ISearchContext {
+	packages: Package[]
+	searchQuery: string
+	setSearchQuery: Dispatch<SetStateAction<string>>
+}
+
+export const SearchContext = createContext<ISearchContext | null>(null)
 
 function App() {
-  const [count, setCount] = useState(0)
+	const [packages, setPackages] = useState(data.packages)
+	const [searchQuery, setSearchQuery] = useState("")
 
-  return (
-    <>
-      <div>
-        <h1 className='text-6xl'>Hello</h1>
-      </div>
-    </>
-  )
+	return (
+		<>
+			<div className='flex flex-col min-h-screen items-center py-6 md:py-12'>
+				<div className="flex flex-col w-200 max-w-[calc(100%-2rem)] shadow">
+					<Header />
+					<SearchContext value={{packages, searchQuery, setSearchQuery}}>
+						<SearchContainer />
+						{packages?.length >= 1 &&
+							<ResultsContainer>
+								{packages // If a query is set, only display results with a matching parcel id
+									.filter(p => searchQuery !== "" ? p.parcel_id === searchQuery : p)
+									.map(pkg => <ResultEntry key={pkg.id} pkg={pkg} />
+								)}
+							</ResultsContainer>
+						}
+					</SearchContext>
+				</div>
+			</div>
+		</>
+	)
 }
 
 export default App
