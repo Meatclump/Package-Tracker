@@ -2,8 +2,9 @@ import { createContext, useEffect, useState, type Dispatch, type SetStateAction 
 import { type Package, data as sampleData } from './sample'
 import SearchContainer from './components/search/SearchContainer'
 import ResultsContainer from './components/results/ResultsContainer'
-import ResultEntry from './components/results/ResultEntry'
-import Header from './components/Header'
+import Card from './components/results/card/Card'
+import Header from './components/header/Header'
+import User from './components/header/User'
 
 export interface ISearchContext {
 	packages: Package[]
@@ -36,7 +37,7 @@ function App() {
 	}
 
 	useEffect(() => {
-		fetchData()
+		// fetchData()
 	}, [])
 
 	return (
@@ -46,17 +47,14 @@ function App() {
 					<Header />
 					<SearchContext value={{packages, searchQuery, setSearchQuery}}>
 						<div className="px-6 pt-3 pb-6 md:px-12 md:pt-6 mb:pb-12 w-full bg-primary">
-							<div className="flex justify-end gap-1 w-full text-sm">
-								<span className='font-semibold'>User:</span>
-								<span>{packages?.length >= 1 && packages[0].user_name}</span>
-							</div>
+							<User user={packages?.length >= 1 ? packages[0].user_name : "Unknown"} />
 							<SearchContainer />
 						</div>
 						{packages?.length >= 1 &&
 							<ResultsContainer>
 								{packages // If a query is set, only display results with a matching parcel id
 									.filter(p => searchQuery !== "" ? p.parcel_id === searchQuery : p)
-									.map(pkg => <ResultEntry key={pkg.id} pkg={pkg} />
+									.map(pkg => <Card key={pkg.id} pkg={pkg} />
 								)}
 							</ResultsContainer>
 						}
